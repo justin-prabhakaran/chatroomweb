@@ -35,7 +35,7 @@ class DesktopDrawer extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                "Create new room",
+                "Create room",
                 style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: Colors.white,
@@ -51,7 +51,7 @@ class DesktopDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               const CustomTextField(
-                title: "Enter Password (if needed)",
+                title: "Password (optinal)",
               ),
               const SizedBox(height: 10),
               InkWell(
