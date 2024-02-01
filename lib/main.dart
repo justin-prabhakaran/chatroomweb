@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'common/colors.dart';
 import 'features/chat/presentation/pages/chat_screen.dart';
 
