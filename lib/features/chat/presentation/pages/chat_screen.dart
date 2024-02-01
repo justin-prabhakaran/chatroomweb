@@ -12,7 +12,7 @@ class ChatScreen extends StatelessWidget {
     return ScreenTypeLayout.builder(
       desktop: (BuildContext context) => const DesktopChatScreen(),
       mobile: (BuildContext context) =>
-          const DesktopChatScreen(), //! needed for mobile
+          const DesktopChatScreen(), //TODO: needed for mobile
     );
   }
 }
@@ -48,12 +48,40 @@ class DesktopChatScreen extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(12))),
                   )),
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(12)),
-                      color: AppColor.darkblue,
-                    ),
-                    height: 100,
                     width: MediaQuery.of(context).size.width * 0.7,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        
+                        border: InputBorder.none,
+                        // contentPadding: const EdgeInsets.symmetric(
+                        //     horizontal: 10), // Adjust padding
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5), // Adjust padding
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.attach_file),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.emoji_emotions),
+                              ),
+                            ],
+                          ),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.send),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
