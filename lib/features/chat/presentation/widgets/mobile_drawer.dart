@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../domain/usecases/room_usecase.dart';
+import '../../data/datasources/socket_io_class.dart';
 import 'custom_button.dart';
 import 'custom_text_field.dart';
 
@@ -41,7 +41,13 @@ class MoibileDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             InkWell(
               onTap: () {
-                createRoom("pass", "sdas");
+                print('called');
+                SocketAPI api = SocketAPI();
+                api.connect();
+                api.event("createroom", {"name": "name", "pass": "data"});
+                api.on("roomcreated", (data) {
+                  print(data);
+                });
               },
               child: const CustomButton(title: "create"),
             ),

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:randomchatweb/features/chat/domain/entities/user_entity.dart';
+
+import 'user_entity.dart';
 
 class RoomEntity extends Equatable {
   final String name;
