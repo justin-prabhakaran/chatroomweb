@@ -10,14 +10,19 @@ class SocketAPI {
   }
   io.Socket? _socket;
   void connect() {
-    _socket = io.io("http://localhost:3000", <String, dynamic>{
-      "transport": ["websocket"],
-      "autoconnect": false,
-    });
+    _socket = io.io(
+        "http://localhost:3000",
+        io.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .build());
 
-    _socket!.onConnect((data) => print(data));
-    _socket!.onConnectError((data) => print(data));
-    _socket!.onError((data) => print(data));
+    if (!_socket!.connected) {
+      _socket!.connect();
+      _socket!.onConnect((data) => print(data));
+      _socket!.onConnectError((data) => print(data));
+      _socket!.onError((data) => print(data));
+    }
   }
 
   void event(String event, dynamic data) {

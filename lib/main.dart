@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:randomchatweb/features/chat/data/datasources/socket_io_class.dart';
 
 import 'common/colors.dart';
 import 'features/chat/presentation/pages/chat_screen.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
+
+  SocketAPI().connect();
   runApp(const MyApp());
 }
 

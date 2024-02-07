@@ -43,9 +43,8 @@ class MoibileDrawer extends StatelessWidget {
               onTap: () {
                 print('called');
                 SocketAPI api = SocketAPI();
-                api.connect();
-                api.event("createroom", {"name": "name", "pass": "data"});
-                api.on("roomcreated", (data) {
+                api.event("createUser", {"name": "justin", "rooms": [null]});
+                api.on("userCreated", (data) {
                   print(data);
                 });
               },
