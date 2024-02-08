@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:randomchatweb/features/chat/data/datasources/socket_io_class.dart';
 
 import '../../../../common/colors.dart';
 import 'custom_button.dart';
@@ -55,7 +56,15 @@ class DesktopDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  SocketAPI.instance.socket.emit(
+                    "createUser",
+                    {"name": "justin", "rooms": []},
+                  );
+
+                  SocketAPI.instance.socket
+                      .once("userCreated", (data) => print(data));
+                },
                 child: const CustomButton(title: "create"),
               ),
             ]),

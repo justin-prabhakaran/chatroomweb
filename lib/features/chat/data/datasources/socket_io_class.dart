@@ -1,35 +1,39 @@
-import 'package:socket_io_client/socket_io_client.dart' as io;
+import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketAPI {
-  static final SocketAPI _instance = SocketAPI._internal();
+  Socket? _socket;
 
-  SocketAPI._internal();
+  SocketAPI._();
 
-  factory SocketAPI() {
-    return _instance;
-  }
-  io.Socket? _socket;
-  void connect() {
-    _socket = io.io(
-        "http://localhost:3000",
-        io.OptionBuilder()
-            .setTransports(['websocket'])
-            .disableAutoConnect()
-            .build());
+  static final SocketAPI _instance = SocketAPI._();
 
-    if (!_socket!.connected) {
-      _socket!.connect();
-      _socket!.onConnect((data) => print(data));
-      _socket!.onConnectError((data) => print(data));
-      _socket!.onError((data) => print(data));
+  static SocketAPI get instance => _instance;
+  Socket get socket {
+    if (_socket == null) {
+      print("Creating new channel");
+      _socket = io(
+          "http://localhost:3000",
+          OptionBuilder()
+              .setTransports(['websocket'])
+              .disableAutoConnect()
+              .build());
     }
+    return _socket!;
   }
 
-  void event(String event, dynamic data) {
-    _socket!.emit(event, data);
+  void createConnection() {
+    _instance.socket.connect();
+    _instance.socket.onConnect((data) => print("connected"));
+    _instance.socket.onConnectError((data) => print("error"));
+    _instance.socket.onError((data) => print("error"));
+    _instance.socket.onDisconnect((data) => print("disconnected"));
   }
 
-  void on(String event, fun) {
-    _socket!.on(event, fun);
-  }
+  // void on(String event, dynamic Function(dynamic) handler) {
+  //   _instance.socket.on(event, handler);
+  // }
+
+  // void emit(String event, [dynamic data]) {
+  //   _instance.socket.emit(event, data);
+  // }
 }

@@ -41,12 +41,7 @@ class MoibileDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             InkWell(
               onTap: () {
-                print('called');
-                SocketAPI api = SocketAPI();
-                api.event("createUser", {"name": "justin", "rooms": [null]});
-                api.on("userCreated", (data) {
-                  print(data);
-                });
+               
               },
               child: const CustomButton(title: "create"),
             ),

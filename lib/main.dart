@@ -7,8 +7,7 @@ import 'features/chat/presentation/pages/chat_screen.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
-
-  SocketAPI().connect();
+  SocketAPI.instance.createConnection();
   runApp(const MyApp());
 }
 

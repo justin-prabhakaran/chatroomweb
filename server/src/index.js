@@ -9,13 +9,16 @@ let count = 0;
 connect();
 io.on("connection", (socket) => {
     count++;
-    console.log(socket.id + " -- connected");
+    console.log(count);
+    console.log(socket.handshake.address + " -- connected");
 
     socket.on("createUser", ({ name, rooms }) => {
         console.log(name + "-------" + rooms);
         createUser(name, rooms).then((id) => {
+            count++;
             socket.emit("userCreated", { id });
             console.log(id);
+            console.log(count);
         });
     });
 });
