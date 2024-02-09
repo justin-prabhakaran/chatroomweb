@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 
 // User Schema
 const userSchema = new mongoose.Schema({
-  name: {
+  uid: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: function () {
+      return this._id
+    },
+  },
+  userName: {
     type: String,
     required: true
   },
@@ -18,19 +24,24 @@ const User = mongoose.model('User', userSchema);
 
 // Room Schema
 const roomSchema = new mongoose.Schema({
+  id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: function () {
+      return this._id;
+    }
+  },
   name: {
     type: String,
     required: true
   },
-  createdby: {
+  pass: {
+    type: String,
+  },
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
 });
 
 const Room = mongoose.model('Room', roomSchema);

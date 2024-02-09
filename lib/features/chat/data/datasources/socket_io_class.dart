@@ -10,7 +10,7 @@ class SocketAPI {
   static SocketAPI get instance => _instance;
   Socket get socket {
     if (_socket == null) {
-      print("Creating new channel");
+      print("Creating new instance of socketapi");
       _socket = io(
           "http://localhost:3000",
           OptionBuilder()

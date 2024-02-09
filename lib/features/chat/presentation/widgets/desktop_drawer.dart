@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:randomchatweb/features/chat/data/datasources/socket_io_class.dart';
+import 'package:randomchatweb/features/chat/data/models/user.dart';
+import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
+import 'package:randomchatweb/features/chat/domain/entities/user_entity.dart';
+import 'package:randomchatweb/features/chat/presentation/bloc/chat_bloc.dart';
 
 import '../../../../common/colors.dart';
 import 'custom_button.dart';
@@ -57,13 +61,16 @@ class DesktopDrawer extends StatelessWidget {
               const SizedBox(height: 10),
               InkWell(
                 onTap: () {
-                  SocketAPI.instance.socket.emit(
-                    "createUser",
-                    {"name": "justin", "rooms": []},
+                  final user = User.instance.userModel;
+                  BlocProvider.of<ChatBloc>(context).add(
+                    CreateRoomEvent(
+                      RoomEntity(
+                        name: "roomname__",
+                        id: user.uid,
+                        createdBy: user.toUserEntity(),
+                      ),
+                    ),
                   );
-
-                  SocketAPI.instance.socket
-                      .once("userCreated", (data) => print(data));
                 },
                 child: const CustomButton(title: "create"),
               ),

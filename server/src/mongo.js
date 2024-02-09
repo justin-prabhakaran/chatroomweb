@@ -4,19 +4,18 @@ const { User, Room, Chat } = require("./model");
 const DB =
     "mongodb+srv://selvahaarish:YInjmgXapOY9QIMj@cluster0.stkkebn.mongodb.net/?retryWrites=true&w=majority";
 
-let createUser = async (name, rooms) => {
-    console.log(name + "<>" + rooms);
-    const user = new User({
-        name,
-        rooms,
-    });
-    return await user.save().then(
-        (data) => {
-            return data._id.toString();
-        }
-    );
+let createUserMongo = async (userName, rooms) => {
+    try {
+        const newUser = new User({ userName, rooms });
+        await newUser.save();
+        console.log(newUser);
+        return newUser;
+    } catch (error) {
+        console.log(error);
+    }
+
 };
-let connect = () => {
+let connectMongo = () => {
     mongo.connect(DB).then(
         () => {
             console.log("db connected");
@@ -26,5 +25,14 @@ let connect = () => {
         }
     );
 };
-
-module.exports = { connect, createUser }
+let createRoomMongo = async (id, name, pass, createdBy) => {
+    try {
+        const newRoom = new Room({ name, pass, createdBy: createdBy.uid });
+        await newRoom.save();
+        console.log(newRoom);
+        return newRoom;
+    } catch (err) {
+        console.log(err);
+    }
+}
+module.exports = { connectMongo, createUserMongo, createRoomMongo }

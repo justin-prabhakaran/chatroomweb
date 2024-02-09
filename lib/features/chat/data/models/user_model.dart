@@ -1,3 +1,6 @@
+import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
+import 'package:randomchatweb/features/chat/domain/entities/user_entity.dart';
+
 import 'room_model.dart';
 
 class UserModel {
@@ -26,6 +29,20 @@ class UserModel {
     );
   }
 
+  UserEntity toUserEntity() {
+    return UserEntity(
+        userName: userName,
+        uid: uid,
+        rooms: rooms
+            .map((e) => RoomEntity(
+                name: e.name,
+                id: e.id,
+                createdBy: e.createdBy.toUserEntity(),
+                //createdAt: e.createdAt
+                ))
+            .toList());
+  }
+
   UserModel copyWith({
     String? userName,
     String? uid,
@@ -37,4 +54,8 @@ class UserModel {
       rooms: rooms ?? this.rooms,
     );
   }
+
+  @override
+  String toString() =>
+      'UserModel(userName: $userName, uid: $uid, rooms: $rooms)';
 }

@@ -6,3 +6,9 @@ abstract class ChatEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class CreateRoomEvent extends ChatEvent {
+  final RoomEntity room;
+
+  const CreateRoomEvent(this.room);
+}
