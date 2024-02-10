@@ -20,8 +20,8 @@ io.on("connection", (socket) => {
         });
     });
 
-    socket.on("createRoom", ({ id, name, pass, createdBy }) => {
-        createRoomMongo(id, name, pass, createdBy).then((room) => {
+    socket.on("createRoom", ({ id, name, pass, createdAt, createdBy }) => {
+        createRoomMongo(id, name, pass, createdAt, createdBy).then((room) => {
             socket.emit("roomCreated", room);
         });
     });

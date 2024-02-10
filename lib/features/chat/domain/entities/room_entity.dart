@@ -1,29 +1,25 @@
 import 'package:equatable/equatable.dart';
 import 'package:randomchatweb/features/chat/data/models/room_model.dart';
 
-import 'user_entity.dart';
-
 class RoomEntity extends Equatable {
   final String name;
   final String id;
-  final UserEntity createdBy;
-  // final DateTime createdAt;
+  final String? pass;
+  final String createdBy;
+  final DateTime createdAt;
 
-  const RoomEntity({
-    required this.name,
-    required this.id,
-    required this.createdBy,
-    // / required this.createdAt
-  });
+  RoomEntity(
+      {required this.name,
+      required this.id,
+      required this.pass,
+      required this.createdBy,
+      required this.createdAt});
 
   RoomModle toRoomModel() {
     return RoomModle(
-        id: id,
-        name: name,
-        //createdAt: createdAt,
-        createdBy: createdBy.toUsrModel());
+        id: id, name: name, createdAt: createdAt, createdBy: createdBy);
   }
 
   @override
-  List<Object?> get props => [name, id, createdBy];
+  List<Object?> get props => [id, name, pass, createdAt, createdBy];
 }

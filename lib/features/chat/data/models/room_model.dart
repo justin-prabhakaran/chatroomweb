@@ -8,39 +8,39 @@ class RoomModle {
   final String id;
   final String name;
   final String? pass;
-  // final DateTime createdAt;
-  final UserModel createdBy;
+  final DateTime createdAt;
+  final String createdBy;
   RoomModle({
     required this.id,
     required this.name,
     this.pass,
-    // required this.createdAt,
+    required this.createdAt,
     required this.createdBy,
   });
-
-  RoomEntity toRoomEntity() {
-    return RoomEntity(
-      name: name,
-      id: id,
-      createdBy: createdBy.toUserEntity(),
-      //   createdAt: createdAt);
-    );
-  }
 
   RoomModle copyWith({
     String? id,
     String? name,
     String? pass,
     DateTime? createdAt,
-    UserModel? createdBy,
+    String? createdBy,
   }) {
     return RoomModle(
       id: id ?? this.id,
       name: name ?? this.name,
       pass: pass ?? this.pass,
-      // createdAt: createdAt ?? this.createdAt,
+      createdAt: createdAt ?? this.createdAt,
       createdBy: createdBy ?? this.createdBy,
     );
+  }
+
+  RoomEntity toRoomEntity() {
+    return RoomEntity(
+        name: name,
+        id: id,
+        pass: pass,
+        createdBy: createdBy,
+        createdAt: createdAt);
   }
 
   Map<String, dynamic> toMap() {
@@ -51,8 +51,8 @@ class RoomModle {
     if (pass != null) {
       result.addAll({'pass': pass});
     }
-    // result.addAll({'createdAt': createdAt.millisecondsSinceEpoch});
-    result.addAll({'createdBy': createdBy.toMap()});
+    result.addAll({'createdAt': createdAt.millisecondsSinceEpoch});
+    result.addAll({'createdBy': createdBy});
 
     return result;
   }
@@ -62,8 +62,8 @@ class RoomModle {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       pass: map['pass'],
-      //  createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
-      createdBy: UserModel.fromMap(map['createdBy']),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      createdBy: map['createdBy'] ?? '',
     );
   }
 
@@ -74,6 +74,27 @@ class RoomModle {
 
   @override
   String toString() {
-    return 'RoomModle(id: $id, name: $name, pass: $pass, createdAt: createdAt, createdBy: $createdBy)';
+    return 'RoomModle(id: $id, name: $name, pass: $pass, createdAt: $createdAt, createdBy: $createdBy)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is RoomModle &&
+        other.id == id &&
+        other.name == name &&
+        other.pass == pass &&
+        other.createdAt == createdAt &&
+        other.createdBy == createdBy;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        pass.hashCode ^
+        createdAt.hashCode ^
+        createdBy.hashCode;
   }
 }

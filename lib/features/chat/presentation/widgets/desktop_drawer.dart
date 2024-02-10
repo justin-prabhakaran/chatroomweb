@@ -67,7 +67,9 @@ class DesktopDrawer extends StatelessWidget {
                       RoomEntity(
                         name: "roomname__",
                         id: user.uid,
-                        createdBy: user.toUserEntity(),
+                        pass: "password",
+                        createdAt: DateTime.now(),
+                        createdBy: user.uid,
                       ),
                     ),
                   );

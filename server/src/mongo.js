@@ -1,5 +1,5 @@
 const mongo = require("mongoose");
-const { User, Room, Chat } = require("./model");
+const { User, Room } = require("./model");
 
 const DB =
     "mongodb+srv://selvahaarish:YInjmgXapOY9QIMj@cluster0.stkkebn.mongodb.net/?retryWrites=true&w=majority";
@@ -25,14 +25,31 @@ let connectMongo = () => {
         }
     );
 };
-let createRoomMongo = async (id, name, pass, createdBy) => {
+let createRoomMongo = async (id, name, pass, createdAt, createdBy) => {
     try {
-        const newRoom = new Room({ name, pass, createdBy: createdBy.uid });
+        // Find the user by id
+        const user = await User.findById(createdBy);
+        console.log(user)
+        if (!user) {
+            console.log('User not found');
+            return;
+        }
+
+        // Create a new room with createdBy set to the user object
+        const newRoom = new Room({ name, pass, createdAt, createdBy });
+        user.rooms.push(newRoom.id);
+        console.log("======USER======");
+        console.log(user)
+
+        await user.save();
         await newRoom.save();
-        console.log(newRoom);
-        return newRoom;
+        this_room = await Room.findById(newRoom.id);
+        console.log("=======ROOM=======");
+        console.log(this_room);
+        return this_room;
     } catch (err) {
         console.log(err);
     }
 }
+
 module.exports = { connectMongo, createUserMongo, createRoomMongo }

@@ -1,52 +1,26 @@
-import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
-import 'package:randomchatweb/features/chat/domain/entities/user_entity.dart';
+import 'dart:convert';
 
-import 'room_model.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../domain/entities/user_entity.dart';
 
 class UserModel {
   final String userName;
   final String uid;
-  final List<RoomModle> rooms;
-
-  UserModel({required this.userName, required this.uid, required this.rooms});
-
-  Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    result.addAll({'userName': userName});
-    result.addAll({'uid': uid});
-    result.addAll({'rooms': rooms.map((x) => x.toMap()).toList()});
-
-    return result;
-  }
-
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      userName: map['userName'] ?? '',
-      uid: map['uid'] ?? '',
-      rooms:
-          List<RoomModle>.from(map['rooms']?.map((x) => RoomModle.fromMap(x))),
-    );
-  }
-
+  final List<String> rooms;
+  UserModel({
+    required this.userName,
+    required this.uid,
+    required this.rooms,
+  });
   UserEntity toUserEntity() {
-    return UserEntity(
-        userName: userName,
-        uid: uid,
-        rooms: rooms
-            .map((e) => RoomEntity(
-                name: e.name,
-                id: e.id,
-                createdBy: e.createdBy.toUserEntity(),
-                //createdAt: e.createdAt
-                ))
-            .toList());
+    return UserEntity(userName: userName, uid: uid, rooms: rooms);
   }
 
   UserModel copyWith({
     String? userName,
     String? uid,
-    List<RoomModle>? rooms,
+    List<String>? rooms,
   }) {
     return UserModel(
       userName: userName ?? this.userName,
@@ -55,7 +29,43 @@ class UserModel {
     );
   }
 
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'userName': userName});
+    result.addAll({'uid': uid});
+    result.addAll({'rooms': rooms});
+
+    return result;
+  }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      userName: map['userName'] ?? '',
+      uid: map['uid'] ?? '',
+      rooms: List<String>.from(map['rooms']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source));
+
   @override
   String toString() =>
       'UserModel(userName: $userName, uid: $uid, rooms: $rooms)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is UserModel &&
+        other.userName == userName &&
+        other.uid == uid &&
+        listEquals(other.rooms, rooms);
+  }
+
+  @override
+  int get hashCode => userName.hashCode ^ uid.hashCode ^ rooms.hashCode;
 }
