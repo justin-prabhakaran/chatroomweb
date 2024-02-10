@@ -5,8 +5,9 @@ import '../../../../common/colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String title;
-
-  const CustomTextField({super.key, required this.title});
+  final TextEditingController controller;
+  const CustomTextField(
+      {super.key, required this.title, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
       height: 52,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
+        controller: controller,
         style: GoogleFonts.poppins(
             color: Colors.white60, fontWeight: FontWeight.normal),
         decoration: InputDecoration(

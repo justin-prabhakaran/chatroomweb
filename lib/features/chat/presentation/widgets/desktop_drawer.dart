@@ -12,7 +12,11 @@ import 'custom_text_field.dart';
 
 class DesktopDrawer extends StatelessWidget {
   final BoxConstraints constraints;
-  const DesktopDrawer({super.key, required this.constraints});
+  DesktopDrawer({super.key, required this.constraints});
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +55,14 @@ class DesktopDrawer extends StatelessWidget {
               height: 7,
             ),
             Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              const CustomTextField(
+              CustomTextField(
+                controller: _nameController,
                 title: "Enter Name",
               ),
               const SizedBox(height: 10),
-              const CustomTextField(
-                title: "Password (optinal)",
+              CustomTextField(
+                controller: _passController,
+                title: "Token (optinal)",
               ),
               const SizedBox(height: 10),
               InkWell(
@@ -65,9 +71,9 @@ class DesktopDrawer extends StatelessWidget {
                   BlocProvider.of<ChatBloc>(context).add(
                     CreateRoomEvent(
                       RoomEntity(
-                        name: "roomname__",
+                        name: _nameController.text.trim(),
                         id: user.uid,
-                        pass: "password",
+                        pass: _passController.text.trim(),
                         createdAt: DateTime.now(),
                         createdBy: user.uid,
                       ),
@@ -96,8 +102,9 @@ class DesktopDrawer extends StatelessWidget {
             ),
             Column(
               children: [
-                const CustomTextField(
-                  title: "Enter code",
+                CustomTextField(
+                  controller: _codeController,
+                  title: "Enter Code",
                 ),
                 const SizedBox(height: 10),
                 InkWell(
@@ -119,6 +126,28 @@ class DesktopDrawer extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
             ),
+            SizedBox(
+              height: constraints.maxHeight - 100,
+              child: BlocBuilder<ChatBloc, ChatState>(
+                buildWhen: (previous, current) => current is RoomCreatedState,
+                builder: (context, state) {
+                  return state is RoomCreatedState
+                      ? ListView.builder(
+                          itemCount: User.instance.userModel.rooms.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(1),
+                              child: Text(index.toString()),
+                            );
+                          },
+                        )
+                      : Container(
+                          margin: const EdgeInsets.all(3),
+                          child: const Text("Empty"),
+                        );
+                },
+              ),
+            )
           ],
         ),
       ),

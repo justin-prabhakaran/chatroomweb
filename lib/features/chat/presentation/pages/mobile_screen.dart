@@ -22,7 +22,7 @@ class MobileChatScreen extends StatelessWidget {
         ),
         drawer: Drawer(
           backgroundColor: AppColor.dark,
-          child: const MoibileDrawer(),
+          child: MoibileDrawer(),
         ),
         body: SafeArea(
           child: Column(

@@ -12,3 +12,5 @@ class CreateRoomEvent extends ChatEvent {
 
   const CreateRoomEvent(this.room);
 }
+
+class PageBuildEvent extends ChatEvent {}

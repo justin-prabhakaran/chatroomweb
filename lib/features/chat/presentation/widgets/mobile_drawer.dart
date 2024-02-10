@@ -5,7 +5,10 @@ import 'custom_button.dart';
 import 'custom_text_field.dart';
 
 class MoibileDrawer extends StatelessWidget {
-  const MoibileDrawer({super.key});
+  MoibileDrawer({super.key});
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +33,18 @@ class MoibileDrawer extends StatelessWidget {
             height: 7,
           ),
           Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            const CustomTextField(
+            CustomTextField(
+              controller: _nameController,
               title: "Enter Name",
             ),
             const SizedBox(height: 10),
-            const CustomTextField(
+            CustomTextField(
+              controller: _passController,
               title: "Enter Password (if needed)",
             ),
             const SizedBox(height: 10),
             InkWell(
-              onTap: () {
-               
-              },
+              onTap: () {},
               child: const CustomButton(title: "create"),
             ),
           ]),
@@ -64,7 +67,8 @@ class MoibileDrawer extends StatelessWidget {
           ),
           Column(
             children: [
-              const CustomTextField(
+              CustomTextField(
+                controller: _codeController,
                 title: "Enter code",
               ),
               const SizedBox(height: 10),
@@ -87,6 +91,7 @@ class MoibileDrawer extends StatelessWidget {
                   fontWeight: FontWeight.normal),
             ),
           ),
+          
         ],
       ),
     );

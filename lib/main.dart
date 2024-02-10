@@ -11,7 +11,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SocketAPI.instance.createConnection();
 
-  UserDataRepository().createUser();
+
 
   runApp(const MyApp());
 }
