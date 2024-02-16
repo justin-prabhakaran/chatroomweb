@@ -8,7 +8,7 @@ class ChatEntity extends Equatable {
   final UserEntity msgBy;
   final RoomEntity msgTo;
 
-  ChatEntity(
+  const ChatEntity(
       {required this.text,
       required this.time,
       required this.msgBy,

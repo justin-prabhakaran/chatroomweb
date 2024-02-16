@@ -1,5 +1,5 @@
-import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
-import 'package:randomchatweb/features/chat/domain/repositories/room_domain_rep.dart';
+import '../entities/room_entity.dart';
+import '../repositories/room_domain_rep.dart';
 
 class RoomDomainUsecase {
   RoomDomainRepository roomDomainRepository = RoomDomainRepository();

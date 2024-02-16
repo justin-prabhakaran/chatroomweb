@@ -1,6 +1,6 @@
-import 'package:randomchatweb/features/chat/data/models/room_model.dart';
-import 'package:randomchatweb/features/chat/data/repositories/room_data_rep.dart';
-import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
+import '../../data/models/room_model.dart';
+import '../../data/repositories/room_data_rep.dart';
+import '../entities/room_entity.dart';
 
 class RoomDomainRepository {
   RoomDataRepository roomDataRepository = RoomDataRepository();

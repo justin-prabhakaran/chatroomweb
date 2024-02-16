@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:randomchatweb/features/chat/data/models/user.dart';
 import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
-import 'package:randomchatweb/features/chat/domain/entities/user_entity.dart';
-import 'package:randomchatweb/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:randomchatweb/features/chat/presentation/bloc/room/bloc/room_bloc.dart';
 
 import '../../../../common/colors.dart';
+import '../../data/models/user.dart';
 import 'custom_button.dart';
 import 'custom_text_field.dart';
 
@@ -67,18 +66,16 @@ class DesktopDrawer extends StatelessWidget {
               const SizedBox(height: 10),
               InkWell(
                 onTap: () {
-                  final user = User.instance.userModel;
-                  BlocProvider.of<ChatBloc>(context).add(
-                    CreateRoomEvent(
-                      RoomEntity(
-                        name: _nameController.text.trim(),
-                        id: user.uid,
-                        pass: _passController.text.trim(),
-                        createdAt: DateTime.now(),
-                        createdBy: user.uid,
-                      ),
-                    ),
-                  );
+                  //TODO: add create room event
+                  final user = User.instance.userModel.toUserEntity();
+                  final room = RoomEntity(
+                      name: _nameController.text.trim(),
+                      id: '',
+                      pass: _passController.text.trim(),
+                      createdBy: user.uid,
+                      createdAt: DateTime.now());
+                  BlocProvider.of<RoomBloc>(context).add(CreateRoomEvent(room));
+                  // final user = User.instance.userModel;
                 },
                 child: const CustomButton(title: "create"),
               ),
@@ -127,27 +124,25 @@ class DesktopDrawer extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: constraints.maxHeight - 100,
-              child: BlocBuilder<ChatBloc, ChatState>(
-                buildWhen: (previous, current) => current is RoomCreatedState,
-                builder: (context, state) {
-                  return state is RoomCreatedState
-                      ? ListView.builder(
-                          itemCount: User.instance.userModel.rooms.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: const EdgeInsets.all(1),
-                              child: Text(index.toString()),
-                            );
-                          },
-                        )
-                      : Container(
-                          margin: const EdgeInsets.all(3),
-                          child: const Text("Empty"),
-                        );
-                },
-              ),
-            )
+                height: constraints.maxHeight - 100,
+                child: BlocBuilder<RoomBloc, RoomState>(
+                  buildWhen: (previous, current) => current is RoomCreatedState,
+                  builder: (context, state) {
+                    final user = User.instance.userModel.toUserEntity();
+                    return state is RoomCreatedState
+                        ? ListView.builder(
+                            itemCount: user.rooms.length,
+                            itemBuilder: (context, index) {
+                              print(user.rooms);
+                              return Container(
+                                margin: const EdgeInsets.all(1),
+                                child: Text(index.toString()),
+                              );
+                            },
+                          )
+                        : Container();
+                  },
+                ))
           ],
         ),
       ),

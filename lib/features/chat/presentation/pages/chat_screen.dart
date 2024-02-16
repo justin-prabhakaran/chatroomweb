@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:randomchatweb/features/chat/presentation/bloc/chat_bloc.dart';
+import '../bloc/auth/auth_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import 'desktop_screen.dart';
@@ -11,8 +11,8 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ChatBloc>(context).add(PageBuildEvent());
-    return BlocBuilder<ChatBloc, ChatState>(
+    BlocProvider.of<AuthBloc>(context).add(PageBuildEvent());
+    return BlocBuilder<AuthBloc, AuthState>(
       buildWhen: (previous, current) => current is SuccessfullState,
       builder: (context, state) {
         return state is SuccessfullState

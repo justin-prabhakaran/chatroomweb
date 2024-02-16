@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:randomchatweb/features/chat/data/models/room_model.dart';
+
+import '../../data/models/room_model.dart';
 
 class RoomEntity extends Equatable {
   final String name;
@@ -8,7 +9,7 @@ class RoomEntity extends Equatable {
   final String createdBy;
   final DateTime createdAt;
 
-  RoomEntity(
+  const RoomEntity(
       {required this.name,
       required this.id,
       required this.pass,

@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
+import '../../domain/entities/room_entity.dart';
 
-import 'user_model.dart';
 
 class RoomModle {
   final String id;

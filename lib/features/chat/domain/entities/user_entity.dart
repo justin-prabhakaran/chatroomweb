@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:randomchatweb/features/chat/data/models/user_model.dart';
+import '../../data/models/user_model.dart';
 
 class UserEntity extends Equatable {
   final String userName;

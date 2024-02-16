@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:randomchatweb/features/chat/data/datasources/socket_io_class.dart';
-import 'package:randomchatweb/features/chat/data/models/room_model.dart';
+import '../datasources/socket_io_class.dart';
+import '../models/room_model.dart';
 
 class RoomDataRepository {
   Future<RoomModle> createRoom(RoomModle room) async {
