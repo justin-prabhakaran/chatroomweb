@@ -42,10 +42,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+backend-server/node_modules
 
 server/.yarn
 server/node_modules
 server/.pnp.*
 
-backend-server/dest
-backend-server/node_modules
