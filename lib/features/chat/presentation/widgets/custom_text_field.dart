@@ -17,13 +17,13 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         style: GoogleFonts.poppins(
-            color: Colors.white60, fontWeight: FontWeight.normal),
+            color: Colors.white60, fontWeight: FontWeight.w200),
         decoration: InputDecoration(
             fillColor: AppColor.blue,
             filled: true,
             hintText: title,
             hintStyle: GoogleFonts.poppins(
-                color: Colors.white60, fontWeight: FontWeight.normal),
+                color: Colors.white60, fontWeight: FontWeight.w200),
             border: const OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(Radius.circular(12)))),

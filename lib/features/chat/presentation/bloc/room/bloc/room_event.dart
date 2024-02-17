@@ -7,7 +7,7 @@ sealed class RoomEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CreateRoomEvent extends RoomEvent{
+class CreateRoomEvent extends RoomEvent {
   final RoomEntity room;
 
   const CreateRoomEvent(this.room);

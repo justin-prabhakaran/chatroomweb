@@ -71,10 +71,12 @@ class DesktopDrawer extends StatelessWidget {
                   final room = RoomEntity(
                       name: _nameController.text.trim(),
                       id: '',
-                      pass: _passController.text.trim(),
+                      pass: _passController.text,
                       createdBy: user.uid,
                       createdAt: DateTime.now());
+                  // BlocProvider.of<RoomBloc>(context).add(UpdateUserEvent());
                   BlocProvider.of<RoomBloc>(context).add(CreateRoomEvent(room));
+
                   // final user = User.instance.userModel;
                 },
                 child: const CustomButton(title: "create"),
@@ -123,28 +125,54 @@ class DesktopDrawer extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
             ),
-            SizedBox(
-                height: constraints.maxHeight - 100,
-                child: BlocBuilder<RoomBloc, RoomState>(
-                  buildWhen: (previous, current) => current is RoomCreatedState,
-                  builder: (context, state) {
-                    final user = User.instance.userModel.toUserEntity();
-                    return state is RoomCreatedState
-                        ? ListView.builder(
-                            itemCount: user.rooms.length,
-                            itemBuilder: (context, index) {
-                              print(user.rooms);
-                              return Container(
-                                margin: const EdgeInsets.all(1),
-                                child: Text(index.toString()),
-                              );
-                            },
-                          )
-                        : Container();
-                  },
-                ))
+            _roomListWidget(constraints: constraints)
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ignore: camel_case_types
+class _roomListWidget extends StatelessWidget {
+  const _roomListWidget({
+    required this.constraints,
+  });
+
+  final BoxConstraints constraints;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: constraints.maxHeight - 100,
+      child: BlocBuilder<RoomBloc, RoomState>(
+        builder: (context, state) {
+          if (state is RoomCreatedState) {
+            return ListView.builder(
+              itemCount: User.instance.userModel.rooms.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Text(
+                    state.newRoom.name + index.toString(),
+                    style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300),
+                  ),
+                );
+              },
+            );
+          } else if (state is RoomLoadingState) {
+            return const Center(
+              child: LinearProgressIndicator(
+                color: Colors.white,
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }

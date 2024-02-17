@@ -14,7 +14,9 @@ io.on("connection", (socket) => {
     //? CREATE NEW USER
     socket.on("createUser", ({ userName, uid, rooms }) => {
         console.log(userName + " Connected");
-        mongoOperations.createUser(userName, rooms);
+        mongoOperations.createUser(userName, rooms).then((user) => {
+            socket.emit("userCreated", user);
+        });
     });
 
     //? CREATE NEW ROOM
@@ -27,6 +29,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("getUser", ({ uid, userName, rooms }) => {
+        console.log("===UPDATE USER CALLED===");
+        console.log({ uid, userName, rooms });
         mongoOperations.getUser(uid).then((user) => {
             console.log("===user updated===");
             console.log(user);

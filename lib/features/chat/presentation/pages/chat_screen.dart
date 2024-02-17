@@ -13,7 +13,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<AuthBloc>(context).add(PageBuildEvent());
     return BlocBuilder<AuthBloc, AuthState>(
-      buildWhen: (previous, current) => current is SuccessfullState,
+      buildWhen: (previous, current) => current is! ErrorState,
       builder: (context, state) {
         return state is SuccessfullState
             ? ScreenTypeLayout.builder(
