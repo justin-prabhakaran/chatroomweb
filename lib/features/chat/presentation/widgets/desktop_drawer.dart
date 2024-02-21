@@ -28,7 +28,7 @@ class DesktopDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
               child: Text(
                 "Chaat",
                 style: GoogleFonts.poppins(
@@ -146,21 +146,30 @@ class _roomListWidget extends StatelessWidget {
     return SizedBox(
       height: constraints.maxHeight - 100,
       child: BlocBuilder<RoomBloc, RoomState>(
+        buildWhen: (previous, current) => current is RoomCreatedState,
         builder: (context, state) {
           if (state is RoomCreatedState) {
             return ListView.builder(
               itemCount: User.instance.userModel.rooms.length,
               itemBuilder: (context, index) {
                 return Container(
-                  margin: const EdgeInsets.all(10),
-                  child: Text(
-                    state.newRoom.name + index.toString(),
-                    style: GoogleFonts.poppins(
-                        fontSize: 18,
+                    margin: const EdgeInsets.all(10),
+                    child: //TODO : create widget for that
+                        ListTile(
+                      title: Text(
+                        // "sjdaskdnaksd" + index.toString(),
+                        state.newRoom.name + index.toString(),
+                        style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      trailing: IconButton(
                         color: Colors.white,
-                        fontWeight: FontWeight.w300),
-                  ),
-                );
+                        icon: const Icon(Icons.more_horiz),
+                        onPressed: () {},
+                      ),
+                    ));
               },
             );
           } else if (state is RoomLoadingState) {

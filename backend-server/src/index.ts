@@ -3,6 +3,7 @@ import http from "http";
 
 import { Server } from "socket.io";
 import { MongoOperations } from "./mongo";
+
 const server = http.createServer(express());
 const io = new Server(server);
 
@@ -28,6 +29,16 @@ io.on("connection", (socket) => {
             });
     });
 
+    //? JOIN ROOM
+    socket.on('joinRoom', async ({ id }) => {
+        const room = await mongoOperations.connectRoom(id);
+        if (room != null) {
+            socket.join(room.id);
+            socket.emit("roomJoined", room);
+        }
+    });
+
+    //? GET USER DETAILS
     socket.on("getUser", ({ uid, userName, rooms }) => {
         console.log("===UPDATE USER CALLED===");
         console.log({ uid, userName, rooms });
@@ -37,8 +48,11 @@ io.on("connection", (socket) => {
             socket.emit("userGet", user);
         });
     });
-});
 
+    //? GET 
+    
+});
+ 
 server.listen(3000, () => {
     console.log("server started");
 });

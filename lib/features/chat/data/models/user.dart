@@ -1,3 +1,5 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'user_model.dart';
 
 class User {
@@ -8,12 +10,14 @@ class User {
   static User get instance => _instance;
 
   UserModel get userModel {
-    if (_userModel == null) {
+    if (_userModel == null) { 
+      final storage = FlutterSecureStorage();
       print("creating new user model");
       _userModel = UserModel(userName: "justin", uid: "", rooms: []);
+      storage.write(key: "token",value: _userModel!.uid);
     }
     return _userModel!;
   }
 
   set userModel(UserModel userModel) => _userModel = userModel;
-}
+}   

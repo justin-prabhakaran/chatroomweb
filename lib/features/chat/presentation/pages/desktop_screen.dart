@@ -29,13 +29,21 @@ class DesktopChatScreen extends StatelessWidget {
                   //? Chat List here
 
                   Expanded(
-                      child: Container(
-                    margin: const EdgeInsets.all(30),
-                    decoration: BoxDecoration(
+                    child: Container(
+                      margin: const EdgeInsets.all(30),
+                      decoration: BoxDecoration(
                         color: AppColor.darkblue,
                         borderRadius:
-                            const BorderRadius.all(Radius.circular(12))),
-                  )),
+                            const BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return Text("asdasd");
+                        },
+                      ),
+                    ),
+                  ),
 
                   //? TextField here
                   const DesktopTextField(),
