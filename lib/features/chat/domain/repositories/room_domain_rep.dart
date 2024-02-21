@@ -9,4 +9,8 @@ class RoomDomainRepository {
         await roomDataRepository.createRoom(roomEntity.toRoomModel());
     return roomModel.toRoomEntity();
   }
+
+  Future<bool> joinRoom(String roomId) async {
+    return await roomDataRepository.joinRoom(roomId);
+  }
 }

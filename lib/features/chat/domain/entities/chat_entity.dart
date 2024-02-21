@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'room_entity.dart';
 import 'user_entity.dart';
 

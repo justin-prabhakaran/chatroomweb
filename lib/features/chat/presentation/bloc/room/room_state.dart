@@ -17,3 +17,11 @@ class RoomCreatedState extends RoomInitial {
 class ErrorState extends RoomState {}
 
 class RoomLoadingState extends RoomInitial {}
+
+class RoomJoinedState extends RoomInitial {}
+
+class ShowSnackState extends RoomInitial {
+  final String text;
+
+  ShowSnackState(this.text);
+}

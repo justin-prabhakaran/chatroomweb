@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/auth/auth_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import '../bloc/auth/auth_bloc.dart';
 import 'desktop_screen.dart';
 import 'mobile_screen.dart';
 

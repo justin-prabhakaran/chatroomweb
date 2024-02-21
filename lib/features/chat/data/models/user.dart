@@ -10,14 +10,15 @@ class User {
   static User get instance => _instance;
 
   UserModel get userModel {
-    if (_userModel == null) { 
-      final storage = FlutterSecureStorage();
+    //TODO : not working properly
+    if (_userModel == null) {
+      const storage = FlutterSecureStorage();
       print("creating new user model");
       _userModel = UserModel(userName: "justin", uid: "", rooms: []);
-      storage.write(key: "token",value: _userModel!.uid);
+      storage.write(key: "token", value: _userModel!.uid);
     }
     return _userModel!;
   }
 
   set userModel(UserModel userModel) => _userModel = userModel;
-}   
+}

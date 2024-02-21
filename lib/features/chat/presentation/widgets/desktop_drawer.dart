@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
-import 'package:randomchatweb/features/chat/presentation/bloc/room/bloc/room_bloc.dart';
 
 import '../../../../common/colors.dart';
+import '../../../../common/overlay.dart';
 import '../../data/models/user.dart';
+import '../../domain/entities/room_entity.dart';
+import '../bloc/room/room_bloc.dart';
 import 'custom_button.dart';
 import 'custom_text_field.dart';
 
@@ -66,7 +67,6 @@ class DesktopDrawer extends StatelessWidget {
               const SizedBox(height: 10),
               InkWell(
                 onTap: () {
-                  //TODO: add create room event
                   final user = User.instance.userModel.toUserEntity();
                   final room = RoomEntity(
                       name: _nameController.text.trim(),
@@ -107,7 +107,11 @@ class DesktopDrawer extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final String roomId = _codeController.text.trim();
+                    BlocProvider.of<RoomBloc>(context)
+                        .add(JoinRoomEvent(roomId));
+                  },
                   child: const CustomButton(title: "join"),
                 ),
                 const SizedBox(
@@ -149,15 +153,19 @@ class _roomListWidget extends StatelessWidget {
         buildWhen: (previous, current) => current is RoomCreatedState,
         builder: (context, state) {
           if (state is RoomCreatedState) {
+            // if (LoadingOverlay.overlayEntry != null) {
+            //   LoadingOverlay.hide();
+            // }
             return ListView.builder(
               itemCount: User.instance.userModel.rooms.length,
               itemBuilder: (context, index) {
                 return Container(
                     margin: const EdgeInsets.all(10),
-                    child: //TODO : create widget for that
+                    child: //TODO : imporve widget for that
                         ListTile(
                       title: Text(
                         // "sjdaskdnaksd" + index.toString(),
+                        //TODO : have same name !!!
                         state.newRoom.name + index.toString(),
                         style: GoogleFonts.poppins(
                             fontSize: 18,
@@ -172,13 +180,21 @@ class _roomListWidget extends StatelessWidget {
                     ));
               },
             );
+            //TODO : doesnt showed up !! need to improve
           } else if (state is RoomLoadingState) {
             return const Center(
               child: LinearProgressIndicator(
                 color: Colors.white,
               ),
             );
-          } else {
+            // LoadingOverlay.show(context);
+            // return const SizedBox.shrink();
+          }
+          // else if(state is Room){
+
+          // }
+
+          else {
             return const SizedBox.shrink();
           }
         },

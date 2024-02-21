@@ -12,6 +12,7 @@ const mongoOperations: MongoOperations = new MongoOperations();
 mongoOperations.connect();
 
 io.on("connection", (socket) => {
+    console.log(socket.conn.remoteAddress + " IS CONNECTED")
     //? CREATE NEW USER
     socket.on("createUser", ({ userName, uid, rooms }) => {
         console.log(userName + " Connected");
@@ -30,11 +31,13 @@ io.on("connection", (socket) => {
     });
 
     //? JOIN ROOM
-    socket.on('joinRoom', async ({ id }) => {
+    socket.on('joinRoom', async (id) => {
         const room = await mongoOperations.connectRoom(id);
         if (room != null) {
             socket.join(room.id);
-            socket.emit("roomJoined", room);
+            socket.emit("roomJoined", true);
+        } else {
+            socket.emit("roomJoined", false);
         }
     });
 
@@ -50,9 +53,9 @@ io.on("connection", (socket) => {
     });
 
     //? GET 
-    
+
 });
- 
+
 server.listen(3000, () => {
     console.log("server started");
 });

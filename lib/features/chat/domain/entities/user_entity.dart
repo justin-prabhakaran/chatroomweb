@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../../data/models/user_model.dart';
 
 class UserEntity extends Equatable {

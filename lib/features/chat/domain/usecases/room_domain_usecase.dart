@@ -6,4 +6,8 @@ class RoomDomainUsecase {
   Future<RoomEntity> createRoom(RoomEntity room) async {
     return await roomDomainRepository.createRoom(room);
   }
+
+  Future<bool> joinRoom(String roomId) async {
+    return roomDomainRepository.joinRoom(roomId);
+  }
 }

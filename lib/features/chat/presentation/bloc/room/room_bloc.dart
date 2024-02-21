@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
-import 'package:randomchatweb/features/chat/domain/usecases/room_domain_usecase.dart';
+
+import '../../../domain/entities/room_entity.dart';
+import '../../../domain/usecases/room_domain_usecase.dart';
 
 part 'room_event.dart';
 part 'room_state.dart';
@@ -12,9 +13,24 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       try {
         emit(RoomLoadingState());
         final newRoom = await RoomDomainUsecase().createRoom(event.room);
+        await Future.delayed(Duration(seconds: 5));
         emit(RoomCreatedState(newRoom));
         print("==RoomCreated==");
         print(newRoom.toString());
+      } catch (err) {
+        emit(ErrorState());
+      }
+    });
+
+    on<JoinRoomEvent>((event, emit) async {
+      try {
+        emit(RoomLoadingState());
+        final bool isJoined = await RoomDomainUsecase().joinRoom(event.roomId);
+        if (isJoined) {
+          emit(RoomJoinedState());
+        } else {
+          emit(ShowSnackState('Failed to join room'));
+        }
       } catch (err) {
         emit(ErrorState());
       }

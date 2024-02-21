@@ -12,3 +12,9 @@ class CreateRoomEvent extends RoomEvent {
 
   const CreateRoomEvent(this.room);
 }
+
+class JoinRoomEvent extends RoomEvent {
+  final String roomId;
+
+  const JoinRoomEvent(this.roomId);
+}
