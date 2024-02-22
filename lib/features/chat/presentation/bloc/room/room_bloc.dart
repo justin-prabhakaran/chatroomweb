@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:randomchatweb/features/chat/presentation/bloc/auth/auth_bloc.dart';
 
 import '../../../domain/entities/room_entity.dart';
 import '../../../domain/usecases/room_domain_usecase.dart';
@@ -13,10 +14,9 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       try {
         emit(RoomLoadingState());
         final newRoom = await RoomDomainUsecase().createRoom(event.room);
-        await Future.delayed(Duration(seconds: 5));
-        emit(RoomCreatedState(newRoom));
         print("==RoomCreated==");
         print(newRoom.toString());
+        emit(RoomCreatedState(newRoom));
       } catch (err) {
         emit(ErrorState());
       }
@@ -34,6 +34,14 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       } catch (err) {
         emit(ErrorState());
       }
+    });
+
+    on<LoadingEvent>((event, emit) {
+      emit(RoomLoadingState());
+    });
+
+    on<LoadedEvent>((event, emit) {
+      emit(RoomLoadedState());
     });
   }
 }

@@ -18,3 +18,5 @@ class JoinRoomEvent extends RoomEvent {
 
   const JoinRoomEvent(this.roomId);
 }
+class LoadingEvent extends RoomEvent{}
+class LoadedEvent extends RoomEvent{}

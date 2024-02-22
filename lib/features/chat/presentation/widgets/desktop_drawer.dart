@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:randomchatweb/features/chat/domain/repositories/room_domain_rep.dart';
 
 import '../../../../common/colors.dart';
-import '../../../../common/overlay.dart';
+
 import '../../data/models/user.dart';
 import '../../domain/entities/room_entity.dart';
 import '../bloc/room/room_bloc.dart';
@@ -74,7 +75,7 @@ class DesktopDrawer extends StatelessWidget {
                       pass: _passController.text,
                       createdBy: user.uid,
                       createdAt: DateTime.now());
-                  // BlocProvider.of<RoomBloc>(context).add(UpdateUserEvent());
+
                   BlocProvider.of<RoomBloc>(context).add(CreateRoomEvent(room));
 
                   // final user = User.instance.userModel;
@@ -129,7 +130,7 @@ class DesktopDrawer extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
             ),
-            _roomListWidget(constraints: constraints)
+            _RoomListWidget(constraints: constraints)
           ],
         ),
       ),
@@ -137,9 +138,81 @@ class DesktopDrawer extends StatelessWidget {
   }
 }
 
-// ignore: camel_case_types
-class _roomListWidget extends StatelessWidget {
-  const _roomListWidget({
+// // ignore: camel_case_types
+// class _roomListWidget extends StatelessWidget {
+//   const _roomListWidget({
+//     required this.constraints,
+//   });
+
+//   final BoxConstraints constraints;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: constraints.maxHeight - 100,
+//       child: BlocBuilder<RoomBloc, RoomState>(
+//         buildWhen: (previous, current) => current is RoomCreatedState,
+//         builder: (context, state) {
+//           if (state is RoomCreatedState){
+
+//             // if (LoadingOverlay.overlayEntry != null) {
+//             //   LoadingOverlay.hide();
+//             // }
+//             return ListView.builder(
+//               itemCount: User.instance.userModel.rooms.length,
+//               itemBuilder: (context, index)  {
+
+//                 final rooms = User.instance.userModel.rooms;
+//                 final room = await getRoom(rooms[index]);
+
+//                 return Container(
+//                     margin: const EdgeInsets.all(10),
+//                     child: //TODO : imporve widget for that
+//                         ListTile(
+//                       title: Text(
+//                         room.name,
+//                         style: GoogleFonts.poppins(
+//                             fontSize: 18,
+//                             color: Colors.white,
+//                             fontWeight: FontWeight.w300),
+//                       ),
+//                       trailing: IconButton(
+//                         color: Colors.white,
+//                         icon: const Icon(Icons.more_horiz),
+//                         onPressed: () {},
+//                       ),
+//                     ));
+//               },
+//             );
+//             //TODO : doesnt showed up !! need to improve
+//           } else if (state is RoomLoadingState) {
+//             return const Center(
+//               child: LinearProgressIndicator(
+//                 color: Colors.white,
+//               ),
+//             );
+//             // LoadingOverlay.show(context);
+//             // return const SizedBox.shrink();
+//           }
+//           // else if(state is Room){
+
+//           // }
+
+//           else {
+//             return const SizedBox.shrink();
+//           }
+//         },
+//       ),
+//     );
+//   }
+
+//   Future<RoomEntity> getRoom(String id) async {
+//     return await RoomDomainRepository().getRoom(id);
+//   }
+// }
+
+class _RoomListWidget extends StatelessWidget {
+  const _RoomListWidget({
     required this.constraints,
   });
 
@@ -150,55 +223,68 @@ class _roomListWidget extends StatelessWidget {
     return SizedBox(
       height: constraints.maxHeight - 100,
       child: BlocBuilder<RoomBloc, RoomState>(
-        buildWhen: (previous, current) => current is RoomCreatedState,
+        buildWhen: (previous, current) =>
+            current is RoomCreatedState || current is RoomLoadedState,
         builder: (context, state) {
-          if (state is RoomCreatedState) {
-            // if (LoadingOverlay.overlayEntry != null) {
-            //   LoadingOverlay.hide();
-            // }
-            return ListView.builder(
-              itemCount: User.instance.userModel.rooms.length,
-              itemBuilder: (context, index) {
-                return Container(
-                    margin: const EdgeInsets.all(10),
-                    child: //TODO : imporve widget for that
-                        ListTile(
-                      title: Text(
-                        // "sjdaskdnaksd" + index.toString(),
-                        //TODO : have same name !!!
-                        state.newRoom.name + index.toString(),
-                        style: GoogleFonts.poppins(
-                            fontSize: 18,
+          if (state is RoomCreatedState || state is RoomLoadedState) {
+            return FutureBuilder<List<RoomEntity>>(
+              future: _fetchRooms(User.instance.userModel.rooms),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  BlocProvider.of<RoomBloc>(context).add(LoadingEvent());
+                  return Container();
+                } else if (snapshot.hasData) {
+                  BlocProvider.of<RoomBloc>(context).add(LoadedEvent());
+                  final rooms = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: rooms.length,
+                    itemBuilder: (context, index) {
+                      final room = rooms[index];
+                      return Container(
+                        margin: const EdgeInsets.all(10),
+                        child: ListTile(
+                          title: Text(
+                            room.name,
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          trailing: IconButton(
                             color: Colors.white,
-                            fontWeight: FontWeight.w300),
-                      ),
-                      trailing: IconButton(
-                        color: Colors.white,
-                        icon: const Icon(Icons.more_horiz),
-                        onPressed: () {},
-                      ),
-                    ));
+                            icon: const Icon(Icons.more_horiz),
+                            onPressed: () {},
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: Text(
+                      'Failed to load rooms',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
               },
             );
-            //TODO : doesnt showed up !! need to improve
-          } else if (state is RoomLoadingState) {
-            return const Center(
-              child: LinearProgressIndicator(
-                color: Colors.white,
-              ),
-            );
-            // LoadingOverlay.show(context);
-            // return const SizedBox.shrink();
-          }
-          // else if(state is Room){
-
-          // }
-
-          else {
+          } else {
             return const SizedBox.shrink();
           }
         },
       ),
     );
+  }
+
+  Future<List<RoomEntity>> _fetchRooms(List<String> roomIds) async {
+    final List<RoomEntity> rooms = [];
+    final repository = RoomDomainRepository();
+    for (final id in roomIds) {
+      final room = await repository.getRoom(id);
+      rooms.add(room);
+    }
+    return rooms;
   }
 }

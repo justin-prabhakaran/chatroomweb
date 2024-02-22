@@ -13,4 +13,10 @@ class RoomDomainRepository {
   Future<bool> joinRoom(String roomId) async {
     return await roomDataRepository.joinRoom(roomId);
   }
+
+  Future<RoomEntity> getRoom(String roomId) async {
+    final room = await roomDataRepository.getRoom(roomId);
+
+    return room.toRoomEntity();
+  }
 }

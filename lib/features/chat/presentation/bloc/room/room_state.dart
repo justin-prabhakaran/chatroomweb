@@ -18,6 +18,8 @@ class ErrorState extends RoomState {}
 
 class RoomLoadingState extends RoomInitial {}
 
+class RoomLoadedState extends RoomInitial {}
+
 class RoomJoinedState extends RoomInitial {}
 
 class ShowSnackState extends RoomInitial {

@@ -10,4 +10,8 @@ class RoomDomainUsecase {
   Future<bool> joinRoom(String roomId) async {
     return roomDomainRepository.joinRoom(roomId);
   }
+
+  Future<RoomEntity> getRoom(String roomId) async {
+   return await roomDomainRepository.getRoom(roomId);
+  }
 }

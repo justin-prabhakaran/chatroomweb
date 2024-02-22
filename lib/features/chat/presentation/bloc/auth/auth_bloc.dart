@@ -13,20 +13,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<PageBuildEvent>((event, emit) async {
       try {
         const storage = FlutterSecureStorage();
-        emit(LoadingState());
+        emit(AuthLoadingState());
         String? s = await storage.read(key: 'token');
-        if (s != null && s.isNotEmpty && s == User.instance.userModel.uid) {
+        if (s != null && s.isNotEmpty) {
           print("Already User Created");
+          print('Fetch user');
+          final user = await UserDataRepository().updateUser(s);
+          User.instance.userModel = user;
           print(s);
-          print(User.instance.userModel.uid);
+          print(User.instance.userModel);
+          emit(SuccessfullState());
         } else {
           await UserDataRepository().createUser();
+          emit(SuccessfullState());
         }
-        emit(SuccessfullState());
-        print("==CREATEING NEW USER===");
       } catch (err) {
-        emit(ErrorState());
+        emit(AuthErrorState());
       }
+    });
+
+    on<AuthLoadingEvent>((event, emit) {
+      emit(AuthLoadingState());
+    });
+
+    on<AuthSuccessEvent>((event, emit) {
+      emit(SuccessfullState());
     });
   }
 }

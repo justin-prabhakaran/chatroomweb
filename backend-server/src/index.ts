@@ -42,17 +42,23 @@ io.on("connection", (socket) => {
     });
 
     //? GET USER DETAILS
-    socket.on("getUser", ({ uid, userName, rooms }) => {
+    socket.on("getUser", (id) => {
         console.log("===UPDATE USER CALLED===");
-        console.log({ uid, userName, rooms });
-        mongoOperations.getUser(uid).then((user) => {
+        console.log(id);
+        mongoOperations.getUser(id).then((user) => {
             console.log("===user updated===");
             console.log(user);
             socket.emit("userGet", user);
         });
     });
 
-    //? GET 
+    //? GET ROOM
+
+    socket.on('getRoom', (id: string) => {
+        mongoOperations.connectRoom(id).then((room) => {
+            socket.emit('roomGot', room);
+        })
+    });
 
 });
 

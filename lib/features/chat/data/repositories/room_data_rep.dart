@@ -6,12 +6,11 @@ import 'user_data_rep.dart';
 
 class RoomDataRepository {
   Future<RoomModle> createRoom(RoomModle room) async {
-    await UserDataRepository().updateUser();
     Completer<RoomModle> completer = Completer();
     SocketAPI.instance.socket.emit("createRoom", room.toMap());
     SocketAPI.instance.socket.once("roomCreated", (data) async {
       final room = RoomModle.fromMap(data);
-      await UserDataRepository().updateUser();
+      await UserDataRepository().updateUser(room.createdBy);
       completer.complete(room);
     });
 
@@ -23,6 +22,17 @@ class RoomDataRepository {
     SocketAPI.instance.socket.emit("joinRoom", roomId);
     SocketAPI.instance.socket.once("roomJoined", (isJoined) async {
       completer.complete(isJoined);
+    });
+
+    return completer.future;
+  }
+
+  Future<RoomModle> getRoom(String roomId) async {
+    Completer<RoomModle> completer = Completer();
+    SocketAPI.instance.socket.emit("getRoom", roomId);
+    SocketAPI.instance.socket.once("roomGot", (data) async {
+      final room = RoomModle.fromMap(data);
+      completer.complete(room);
     });
 
     return completer.future;

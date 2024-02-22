@@ -9,10 +9,8 @@ sealed class AuthState extends Equatable {
 
 class AuthInitial extends AuthState {}
 
-
-
 class SuccessfullState extends AuthInitial {}
 
-class LoadingState extends AuthInitial {}
+class AuthLoadingState extends AuthInitial {}
 
-class ErrorState extends AuthInitial {}
+class AuthErrorState extends AuthInitial {}
