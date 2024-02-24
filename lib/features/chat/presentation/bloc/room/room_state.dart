@@ -16,9 +16,9 @@ class RoomCreatedState extends RoomInitial {
 
 class ErrorState extends RoomState {}
 
-class RoomLoadingState extends RoomInitial {}
+class RoomLoadingState extends RoomState {}
 
-class RoomLoadedState extends RoomInitial {}
+// class RoomLoadedState extends RoomInitial {}
 
 class RoomJoinedState extends RoomInitial {}
 

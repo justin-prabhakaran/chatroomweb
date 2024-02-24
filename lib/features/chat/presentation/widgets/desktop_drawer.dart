@@ -223,43 +223,20 @@ class _RoomListWidget extends StatelessWidget {
     return SizedBox(
       height: constraints.maxHeight - 100,
       child: BlocBuilder<RoomBloc, RoomState>(
-        buildWhen: (previous, current) =>
-            current is RoomCreatedState || current is RoomLoadedState,
+        buildWhen: (previous, current) => current is RoomCreatedState,
         builder: (context, state) {
-          if (state is RoomCreatedState || state is RoomLoadedState) {
+          if (state is RoomCreatedState || state is RoomInitial) {
             return FutureBuilder<List<RoomEntity>>(
               future: _fetchRooms(User.instance.userModel.rooms),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  BlocProvider.of<RoomBloc>(context).add(LoadingEvent());
-                  return Container();
-                } else if (snapshot.hasData) {
-                  BlocProvider.of<RoomBloc>(context).add(LoadedEvent());
-                  final rooms = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: rooms.length,
-                    itemBuilder: (context, index) {
-                      final room = rooms[index];
-                      return Container(
-                        margin: const EdgeInsets.all(10),
-                        child: ListTile(
-                          title: Text(
-                            room.name,
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          trailing: IconButton(
-                            color: Colors.white,
-                            icon: const Icon(Icons.more_horiz),
-                            onPressed: () {},
-                          ),
-                        ),
-                      );
-                    },
+                  //BlocProvider.of<RoomBloc>(context).add(LoadingEvent());
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
+                } else if (snapshot.hasData) {
+                  final rooms = snapshot.data!;
+                  return RoomItemWidget(rooms: rooms);
                 } else {
                   return const Center(
                     child: Text(
@@ -286,5 +263,42 @@ class _RoomListWidget extends StatelessWidget {
       rooms.add(room);
     }
     return rooms;
+  }
+}
+
+class RoomItemWidget extends StatelessWidget {
+  const RoomItemWidget({
+    super.key,
+    required this.rooms,
+  });
+
+  final List<RoomEntity> rooms;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: rooms.length,
+      itemBuilder: (context, index) {
+        final room = rooms[index];
+        return Container(
+          margin: const EdgeInsets.all(10),
+          child: ListTile(
+            title: Text(
+              room.name,
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            trailing: IconButton(
+              color: Colors.white,
+              icon: const Icon(Icons.more_horiz),
+              onPressed: () {},
+            ),
+          ),
+        );
+      },
+    );
   }
 }

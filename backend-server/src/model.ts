@@ -1,4 +1,4 @@
-import exp from "constants";
+
 import mongoose, { Schema, Document } from "mongoose";
 
 interface RoomDoc extends Document {
@@ -7,8 +7,8 @@ interface RoomDoc extends Document {
     pass: string
     createdAt: number
     createdBy: Schema.Types.ObjectId
-    chats: Array<Schema.Types.ObjectId>
 }
+
 interface UserDoc extends Document {
     uid: Schema.Types.ObjectId
     userName: string
@@ -17,9 +17,10 @@ interface UserDoc extends Document {
 
 interface ChatDoc extends Document {
     id: Schema.Types.ObjectId
-    message: String
-    by: Schema.Types.ObjectId
-    time: Number
+    text: String
+    msgBy: Schema.Types.ObjectId
+    time: Number,
+    roomId: Schema.Types.ObjectId
 }
 
 const chatScema = new Schema<ChatDoc>({
@@ -29,17 +30,22 @@ const chatScema = new Schema<ChatDoc>({
             return this._id;
         }
     },
-    message: {
+    text: {
         type: String,
         required: true
     },
-    by: {
+    msgBy: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     time: {
         type: Number,
+        required: true
+    },
+    roomId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Room',
         required: true
     }
 
@@ -65,10 +71,6 @@ const roomSchema = new Schema<RoomDoc>({
         ref: 'User',
         required: true,
     },
-    chats: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Chat'
-    }
 
 });
 

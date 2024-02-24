@@ -2,17 +2,16 @@ import 'dart:convert';
 
 import '../../domain/entities/room_entity.dart';
 
-
 class RoomModle {
   final String id;
   final String name;
-  final String? pass;
+  final String pass;
   final DateTime createdAt;
   final String createdBy;
   RoomModle({
     required this.id,
     required this.name,
-    this.pass,
+    required this.pass,
     required this.createdAt,
     required this.createdBy,
   });
@@ -47,9 +46,9 @@ class RoomModle {
 
     result.addAll({'id': id});
     result.addAll({'name': name});
-    if (pass != null) {
-      result.addAll({'pass': pass});
-    }
+
+    result.addAll({'pass': pass});
+
     result.addAll({'createdAt': createdAt.millisecondsSinceEpoch});
     result.addAll({'createdBy': createdBy});
 
@@ -60,7 +59,7 @@ class RoomModle {
     return RoomModle(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
-      pass: map['pass'],
+      pass: map['pass'] ?? '',
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
       createdBy: map['createdBy'] ?? '',
     );

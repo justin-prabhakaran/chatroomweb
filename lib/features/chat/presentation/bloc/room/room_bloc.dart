@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:randomchatweb/features/chat/presentation/bloc/auth/auth_bloc.dart';
 
 import '../../../domain/entities/room_entity.dart';
 import '../../../domain/usecases/room_domain_usecase.dart';
@@ -36,12 +35,5 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       }
     });
 
-    on<LoadingEvent>((event, emit) {
-      emit(RoomLoadingState());
-    });
-
-    on<LoadedEvent>((event, emit) {
-      emit(RoomLoadedState());
-    });
   }
 }

@@ -1,20 +1,27 @@
 import 'package:equatable/equatable.dart';
+import 'package:randomchatweb/features/chat/data/models/chat_model.dart';
 
-import 'room_entity.dart';
 import 'user_entity.dart';
 
 class ChatEntity extends Equatable {
+  final String id;
   final String text;
-  final String time;
-  final UserEntity msgBy;
-  final RoomEntity msgTo;
+  final DateTime time;
+  final String msgBy;
+  final String roomId;
 
   const ChatEntity(
-      {required this.text,
+      {required this.id,
+      required this.text,
       required this.time,
       required this.msgBy,
-      required this.msgTo});
+      required this.roomId});
+
+  ChatModle toChatModel() {
+    return ChatModle(
+        id: id, text: text, msgBy: msgBy, time: time, roomId: roomId);
+  }
 
   @override
-  List<Object?> get props => [text, time, msgBy, msgTo];
+  List<Object?> get props => [id, text, time, msgBy, roomId];
 }

@@ -22,12 +22,14 @@ io.on("connection", (socket) => {
     });
 
     //? CREATE NEW ROOM
-    socket.on("createRoom", ({ id, name, pass, createdAt, createdBy }) => {
-        mongoOperations
+    socket.on("createRoom", async ({ id, name, pass, createdAt, createdBy }) => {
+        const room = await mongoOperations
             .createRoom(name, pass, createdAt, createdBy)
-            .then((room) => {
-                socket.emit("roomCreated", room);
-            });
+        if (room != null) {
+            socket.join(room._id);
+
+            socket.emit('roomCreated', room);
+        }
     });
 
     //? JOIN ROOM
@@ -58,6 +60,19 @@ io.on("connection", (socket) => {
         mongoOperations.connectRoom(id).then((room) => {
             socket.emit('roomGot', room);
         })
+    });
+
+    //? SEND MESSAGE
+    socket.on('sendMessage', async ({
+        text,
+        msgBy,
+        time,
+        roomId
+    }) => {
+        const chat = await mongoOperations.createChat(text, msgBy, time, roomId);
+        if (chat != null) {
+            socket.in(roomId).emit('recieveMessage', chat);
+        }
     });
 
 });

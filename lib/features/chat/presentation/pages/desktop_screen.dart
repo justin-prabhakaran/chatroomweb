@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/colors.dart';
 import '../widgets/desktop_drawer.dart';
@@ -36,12 +37,7 @@ class DesktopChatScreen extends StatelessWidget {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(12)),
                       ),
-                      child: ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return Text("asdasd");
-                        },
-                      ),
+                      child: const ChatListViewWidget(),
                     ),
                   ),
 
@@ -57,6 +53,64 @@ class DesktopChatScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ChatListViewWidget extends StatelessWidget {
+  const ChatListViewWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ListView.builder(
+          itemCount: 17,
+          itemBuilder: (context, index) {
+            return Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.5),
+                  // 35% of available width
+                  child: IntrinsicWidth(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: AppColor.lightblue,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          'askdjnfnsfnkjsf asdfjadfkajskfj jaskdsjkfkjds kj sakdfjasf skjf dfufajdsdlfkj',
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        subtitle: Text(
+                          '12:32 AM',
+                          style: GoogleFonts.poppins(
+                            fontSize: 11,
+                            color: Colors.white.withOpacity(0.5),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -76,15 +76,16 @@ export class MongoOperations {
         }
     }
 
-    async createChat(message: string, by: string, time: Number) {
+    async createChat(text: string, msgBy: string, time: Number, roomId: string) {
         try {
-            const user = await User.findById(by);
+            const user = await User.findById(msgBy);
             if (user != null) {
-                const newChat = new Chat(
-                    message,
-                    by,
-                    time
-                );
+                const newChat = new Chat({
+                    text,
+                    msgBy,
+                    time,
+                    roomId
+                });
                 return newChat;
             }
         } catch (err) {

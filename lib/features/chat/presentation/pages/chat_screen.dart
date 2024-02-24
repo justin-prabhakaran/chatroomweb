@@ -18,15 +18,10 @@ class ChatScreen extends StatelessWidget {
         if (state is RoomLoadingState) {
           BlocProvider.of<AuthBloc>(context).add((AuthLoadingEvent()));
         }
-        if (state is RoomLoadedState) {
-          BlocProvider.of<AuthBloc>(context).add(AuthSuccessEvent());
-        }
         if (state is RoomCreatedState) {
           BlocProvider.of<AuthBloc>(context).add(AuthSuccessEvent());
         }
-        if (state is RoomLoadingState) {
-          BlocProvider.of<AuthBloc>(context).add((AuthLoadingEvent()));
-        }
+
         if (state is RoomJoinedState) {
           BlocProvider.of<AuthBloc>(context).add((AuthSuccessEvent()));
         }

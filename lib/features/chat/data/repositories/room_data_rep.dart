@@ -5,6 +5,7 @@ import '../models/room_model.dart';
 import 'user_data_rep.dart';
 
 class RoomDataRepository {
+  
   Future<RoomModle> createRoom(RoomModle room) async {
     Completer<RoomModle> completer = Completer();
     SocketAPI.instance.socket.emit("createRoom", room.toMap());
@@ -33,8 +34,10 @@ class RoomDataRepository {
     SocketAPI.instance.socket.once("roomGot", (data) async {
       final room = RoomModle.fromMap(data);
       completer.complete(room);
+      
     });
 
     return completer.future;
   }
+
 }
