@@ -18,11 +18,13 @@ class SocketAPI {
               .disableAutoConnect()
               .build());
     }
+
     return _socket!;
   }
 
   void createConnection() {
     _instance.socket.connect();
+    _instance.socket.onAny((event, data) => print("$event==========$data"));
     _instance.socket.onConnect((data) => print("connected"));
     _instance.socket.onConnectError((data) => print("error"));
     _instance.socket.onError((data) => print("error"));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:randomchatweb/features/chat/domain/repositories/room_domain_rep.dart';
+import 'package:randomchatweb/features/chat/presentation/bloc/chat/chat_bloc.dart';
 
 import '../../../../common/colors.dart';
 
@@ -280,21 +281,29 @@ class RoomItemWidget extends StatelessWidget {
       itemCount: rooms.length,
       itemBuilder: (context, index) {
         final room = rooms[index];
-        return Container(
-          margin: const EdgeInsets.all(10),
-          child: ListTile(
-            title: Text(
-              room.name,
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.w300,
+        return InkWell(
+          onTap: () {
+            BlocProvider.of<ChatBloc>(context).add(RoomClickedEvent(room));
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                color: AppColor.lightblue,
+                borderRadius: const BorderRadius.all(Radius.circular(12))),
+            margin: const EdgeInsets.all(10),
+            child: ListTile(
+              title: Text(
+                room.name,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
-            ),
-            trailing: IconButton(
-              color: Colors.white,
-              icon: const Icon(Icons.more_horiz),
-              onPressed: () {},
+              trailing: IconButton(
+                color: Colors.white,
+                icon: const Icon(Icons.more_horiz),
+                onPressed: () {},
+              ),
             ),
           ),
         );

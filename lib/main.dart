@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:randomchatweb/features/chat/presentation/bloc/chat/chat_bloc.dart';
 
 import 'common/colors.dart';
 import 'features/chat/data/datasources/socket_io_class.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => RoomBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ChatBloc(),
         ),
       ],
       child: MaterialApp(

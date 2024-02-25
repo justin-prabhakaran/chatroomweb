@@ -43,7 +43,8 @@ class MobileChatScreen extends StatelessWidget {
                     )),
 
                     //? TextField here
-                    const DesktopTextField(),
+                    //TODO : bloc needed
+                    //  DesktopTextField(),
 
                     const SizedBox(
                       height: 20,

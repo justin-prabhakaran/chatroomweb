@@ -13,8 +13,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       try {
         emit(RoomLoadingState());
         final newRoom = await RoomDomainUsecase().createRoom(event.room);
-        print("==RoomCreated==");
-        print(newRoom.toString());
+       
         emit(RoomCreatedState(newRoom));
       } catch (err) {
         emit(ErrorState());

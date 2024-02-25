@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:randomchatweb/features/chat/data/models/user.dart';
+
 import '../datasources/socket_io_class.dart';
 import '../models/room_model.dart';
 import 'user_data_rep.dart';
 
 class RoomDataRepository {
-  
   Future<RoomModle> createRoom(RoomModle room) async {
     Completer<RoomModle> completer = Completer();
     SocketAPI.instance.socket.emit("createRoom", room.toMap());
@@ -20,7 +21,8 @@ class RoomDataRepository {
 
   Future<bool> joinRoom(String roomId) async {
     Completer<bool> completer = Completer();
-    SocketAPI.instance.socket.emit("joinRoom", roomId);
+    SocketAPI.instance.socket
+        .emit("joinRoom", [roomId, User.instance.userModel.uid]);
     SocketAPI.instance.socket.once("roomJoined", (isJoined) async {
       completer.complete(isJoined);
     });
@@ -34,10 +36,8 @@ class RoomDataRepository {
     SocketAPI.instance.socket.once("roomGot", (data) async {
       final room = RoomModle.fromMap(data);
       completer.complete(room);
-      
     });
 
     return completer.future;
   }
-
 }

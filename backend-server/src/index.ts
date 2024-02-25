@@ -12,6 +12,13 @@ const mongoOperations: MongoOperations = new MongoOperations();
 mongoOperations.connect();
 
 io.on("connection", (socket) => {
+
+    socket.onAny((event, args) => {
+        console.log(event + " <<<<< " + args);
+    })
+    socket.onAnyOutgoing((event, args) => {
+        console.log(event + " >>>>> " + args)
+    })
     console.log(socket.conn.remoteAddress + " IS CONNECTED")
     //? CREATE NEW USER
     socket.on("createUser", ({ userName, uid, rooms }) => {
@@ -26,17 +33,24 @@ io.on("connection", (socket) => {
         const room = await mongoOperations
             .createRoom(name, pass, createdAt, createdBy)
         if (room != null) {
-            socket.join(room._id);
+            console.log(room.id + " IS JOINED");
+            socket.join(room.id);
 
             socket.emit('roomCreated', room);
         }
     });
 
     //? JOIN ROOM
-    socket.on('joinRoom', async (id) => {
+    socket.on('joinRoom', async (id, userId) => {
         const room = await mongoOperations.connectRoom(id);
-        if (room != null) {
+        const user = await mongoOperations.getUser(userId);
+
+        if (room != null && user != null) {
+            user.rooms.push(room.id);
+
+            await user.save()
             socket.join(room.id);
+            console.log(room.id + " IS JOINED");
             socket.emit("roomJoined", true);
         } else {
             socket.emit("roomJoined", false);
@@ -55,7 +69,6 @@ io.on("connection", (socket) => {
     });
 
     //? GET ROOM
-
     socket.on('getRoom', (id: string) => {
         mongoOperations.connectRoom(id).then((room) => {
             socket.emit('roomGot', room);
@@ -69,14 +82,22 @@ io.on("connection", (socket) => {
         time,
         roomId
     }) => {
+        console.log(text);
         const chat = await mongoOperations.createChat(text, msgBy, time, roomId);
-        if (chat != null) {
-            socket.in(roomId).emit('recieveMessage', chat);
+        const room = await mongoOperations.connectRoom(roomId);
+        if (chat != null && room != null) {
+            const res = await socket.to(room.id).emit('recieveMessage', chat);
+            console.log(socket.rooms);
+            console.log(chat);
+            console.log(res);
+
         }
     });
+
 
 });
 
 server.listen(3000, () => {
     console.log("server started");
 });
+

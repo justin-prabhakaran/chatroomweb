@@ -6,3 +6,8 @@ sealed class ChatEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class RoomClickedEvent extends ChatEvent {
+  final RoomEntity room;
+  const RoomClickedEvent(this.room);
+}

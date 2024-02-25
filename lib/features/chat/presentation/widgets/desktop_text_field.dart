@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:randomchatweb/features/chat/data/models/user.dart';
+import 'package:randomchatweb/features/chat/data/repositories/chat_data_rep.dart';
+import 'package:randomchatweb/features/chat/domain/entities/chat_entity.dart';
+import 'package:randomchatweb/features/chat/domain/entities/room_entity.dart';
 
 class DesktopTextField extends StatelessWidget {
-  const DesktopTextField({
+  final RoomEntity room;
+  const DesktopTextField(
+    this.room, {
     super.key,
   });
 
@@ -14,6 +20,16 @@ class DesktopTextField extends StatelessWidget {
         color: Colors.white,
       ),
       child: TextField(
+        onSubmitted: (value) {
+          //TODO : need roomId
+          ChatDataRepository.sendMessage(ChatEntity(
+                  id: '',
+                  text: value.trim(),
+                  time: DateTime.now(),
+                  msgBy: User.instance.userModel.uid,
+                  roomId: room.id)
+              .toChatModel());
+        },
         decoration: InputDecoration(
           border: InputBorder.none,
           // contentPadding: const EdgeInsets.symmetric(
